@@ -1,18 +1,18 @@
-
-$.datepicker.regional['fr'] = {
+jQuery(function($){
+	$.datepicker.regional['fr'] = {
 		closeText: 'Fermer',
-		prevText: '&#x3c;Préc',
-		nextText: 'Suiv&#x3e;',
+		prevText: '<Préc',
+		nextText: 'Suiv>',
 		currentText: 'Aujourd\'hui',
 		monthNames: ['Janvier','Fevrier','Mars','Avril','Mai','Juin',
-		'Juillet','Aout','Septembre','Octobre','Novembre','Décembre'],
+		'Juillet','Aout','Septembre','Octobre','Novembre','Decembre'],
 		monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun',
 		'Jul','Aou','Sep','Oct','Nov','Dec'],
 		dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
 		dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
 		dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
 		weekHeader: 'Sm',
-		dateFormat: 'dd-mm-yy',
+		dateFormat: 'DD, d MM, yy',
 		firstDay: 1,
 		isRTL: false,
 		showMonthAfterYear: false,
@@ -21,22 +21,24 @@ $.datepicker.regional['fr'] = {
 		maxDate: '+12M +0D',
 		numberOfMonths: 1,
 		showButtonPanel: true,
-        showAnim : 'fold'
+		showAnim: 'fold',
+		showOn: "button",
+      buttonImage: "../css/images/calendar.gif",
+      buttonImageOnly: true,
+      buttonText: "Select date"
 		};
 	$.datepicker.setDefaults($.datepicker.regional['fr']);
+	
+});//fin datepicker regional
+ 
+$(function(){ 
 
-
-$( function() {
-    $( "#datepicker" ).datepicker({
-        
-    
-        
-    });// datepicker
-    /*******************************************************/
-    
-    
-    
-    var availableTags = [
+$( "#datepicker" ).datepicker();
+ 
+ /***********************************************************************************************************/
+	
+	
+	var availableTags = [
       "ActionScript",
       "AppleScript",
       "Asp",
@@ -60,40 +62,46 @@ $( function() {
       "Scala",
       "Scheme"
     ];
+	
+	
     /*$( "#tags" ).autocomplete({
       source: availableTags
     });*/
-    
-    $( "#tags" ).autocomplete({
+	
+	$( "#tags" ).autocomplete({
   source: function( request, response ) {
           var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
           response( $.grep( availableTags, function( item ){
               return matcher.test( item );
           }) );
       }
-});
-  
-  /********************************************************/
-    
-  
-$.ajax( {
-                  url:'../json/cities.json',
-				  method: "GET",
-				  dataType : "json",
-				  success:function(monObjet) {
-  					
-				//	console.log(monObjet.length); 
-						 var i = 0;
-					  
-					  var villes = [];
-					
-					  
-					  	for(i=0; i<monObjet.length; i++) 
+});//on cherche que à partir de la premiere lettre, si on veut toutes les lettres des noms etc il faut enlever ce morceaux de codes
 	
+	
+/*******************************************************************************************/
+	
+	$.ajax(  {
+		
+		url:'../json/cities.json',
+		method:"GET",
+		dataType:"json",
+		success:function(monObjet){
+			
+			
+			
+			
+			//console.log(monObjet);
+			var i = 0;
+			
+			var villes = [];
+			//villes.push("brux");
+			
+			for(i=0; i<monObjet.length; i++)
+				
 				
 				{
 					
-						var obj = {};
+					var obj = {};
 				
 				
 				obj["value"] = monObjet[i].zip;
@@ -102,30 +110,94 @@ $.ajax( {
 
 			villes.push(obj);
 					
-					
-					
-				} // for
-					  
-					  console.log(villes);
-			  
-					  
-			$( "#cp" ).autocomplete({
-      		source: function( request, response ) {
+				}//for
+			
+			console.log(villes);
+			
+			$("#cp").autocomplete({
+				source: function( request, response ) {
           var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
           response( $.grep( villes, function( item ){
               return matcher.test( item.label );
           }) );
-      },
-			minLength: 1,
-                select: function(event,ui){
-                    
-                    $("#ville").val(ui.item.ville);
-                }
-				});		  
-					  
-					 
-                  } // success function
+      }
+,
+				minLength:1,
+				
+	select: function(event, ui){
+		
+		
+		$("#ville").val(ui.item.ville);
+	}
+			});
+			
+			
+			
+		
+			
+			
+			
+		}//success function
+		
+		
+		
+		
+		
+		
+	});//ajax
+	
+	
+	
+ /***********************************************************************************************************/	
+	
+	
+	
+$('#form').validetta({
+  onValid : function( event ) {
+    event.preventDefault(); // Will prevent the submission of the form
+   
+   //alert( 'Nice, Form is valid.' );
+ 
+ // ici faire la requête ajax
+ 
+ 
+ }, // valid
+  onError : function( event ){
+    //alert( 'Stop bro !! There are some errors.');
+  
+  
+  }, // error
+  
+  
+  display : 'bubble',//position de la bulle d'erreur
+  errorClass : 'validetta-error',
+  /** Same for valid validation */
+  validClass : 'validetta-valid', // Same for valid validation
+  bubblePosition: 'right', // Bubble position // right / bottom
+  bubbleGapLeft: 15, // Right gap of bubble (px unit)
+  bubbleGapTop: 0, // Top gap of bubble (px unit)
+  /* To enable real-time form control, set this option true. */
+  realTime : true
+  
+});//validetta
 
-			  }); // ajax	
-
-  } ); // ready
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ 
+ });//ready

@@ -2,6 +2,15 @@
 @import "bootstrap";
 @import "validetta";
 
-body{
-    background-color:$red;
+body {background:$purple}
+
+
+.validetta-valid input {
+	
+	background-image:url(https://previews.123rf.com/images/ahasoft2000/ahasoft20001701/ahasoft2000170110307/70427502-ok-ic%C3%B4ne-arrondie-style-d-illustration-vectorielle-est-symbole-embl%C3%A9matique-plat-%C3%A0-l-int%C3%A9rieur-d-un-.jpg);
+	background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: top right;
+	
+	
 }
